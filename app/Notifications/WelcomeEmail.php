@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-use Models\VoucherCode;
+use App\Models\VoucherCode;
 
 class WelcomeEmail extends Notification
 {
