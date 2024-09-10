@@ -23,6 +23,21 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function voucherCodes() {
+        return $this->hasMany(VoucherCode::class);
+    }
+
+    protected static function booted() {
+        static::created(function ($user) {
+            $user->sendWelcomeEmail();
+        });
+    }
+
+    public function sendWelcomeEmail() {
+        $voucherCode = VoucherCode::generate($this);
+        $this->notify(new WelcomeEmail($voucherCode));
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

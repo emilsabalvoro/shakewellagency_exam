@@ -28,26 +28,9 @@ class AuthController extends Controller
             'username' => $validated['username'],
             'first_name' => $validated['first_name'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => bcrypt($validated['password']),
         ]);
 
-        $voucherCode = VoucherCode::create([
-            'code' => $this->generateUniqueCode();
-        ]);
-
-        Mail::to($user->email)->send(new WelcomeEmail($user, $voucherCode->code));
-
-        return response()->json([
-            'message' => 'User successfully registered. Welcome email has been sent'
-        ], 201);
-    }
-
-    private function generateUniqueCode()
-    {
-        do {
-            $code = strtoupper(substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5));
-        } while (VoucherCode::where('code', $code)->exists());
-
-        return $code;
+        return response()->json(['message' => 'User registered successfully']);
     }
 }
